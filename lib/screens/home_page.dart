@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:zalama/constants/colors.dart';
+import 'package:zalama/screens/borrow_screen.dart';
+import 'package:zalama/screens/credit_screen.dart';
+import 'package:zalama/screens/financial_advice_screen.dart';
 import 'package:zalama/screens/history_screen.dart';
+import 'package:zalama/screens/loan_screen.dart';
 import 'package:zalama/screens/offers_screen.dart';
 import 'package:zalama/screens/profile_screen.dart';
 import 'package:zalama/screens/pub_screen.dart';
 import 'package:zalama/screens/recharge_screen.dart';
+import 'package:zalama/screens/salary_advance_plus_screen.dart';
+import 'package:zalama/screens/salary_advance_screen.dart';
+import 'package:zalama/screens/transfer_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,6 +25,7 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
   bool _isBalanceVisible = true;
   int _currentIndex = 0;
+  bool _isPeculeSelected = false;
   late AnimationController _refreshController;
 
   @override
@@ -254,40 +262,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         ),
                         const SizedBox(height: 24),
                         // Solde principal
-                        Row(
-                          children: [
-                            const Text(
-                              'Solde principal',
-                              style: TextStyle(
-                                color: AppColors.grey,
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(width: 8),
-                            Text('Pecule en cours', style: TextStyle(color: AppColors.primary.withOpacity(0.5), fontSize: 12),),
-                            const Spacer(),
-                            IconButton(
-                              icon: RotationTransition(
-                                turns: Tween(begin: 0.0, end: 1.0).animate(_refreshController),
-                                child: SvgPicture.asset(
-                                  'assets/icons/refresh.svg',
-                                  colorFilter: const ColorFilter.mode(
-                                    AppColors.grey,
-                                    BlendMode.srcIn,
-                                  ),
-                                  width: 20,
-                                  height: 20,
-                                ),
-                              ),
-                              onPressed: _refreshBalance,
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(
-                                minWidth: 32,
-                                minHeight: 32,
-                              ),
-                            ),
-                          ],
-                        ),
+                        _buildTabSelector(),
                         Row(
                           children: [
                             Text(
@@ -298,7 +273,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 color: AppColors.primary,
                               ),
                             ),
-                            const SizedBox(width: 8),
+                            const SizedBox(width: 5),
                             IconButton(
                               icon: Icon(
                                 _isBalanceVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
@@ -323,7 +298,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const SizedBox(height: 24),
+                            const SizedBox(height: 8),
                             // Actions rapides
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -343,17 +318,38 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                                 _buildActionButton(
                                   icon: 'assets/icons/transfer.svg',
                                   label: 'Transférer',
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const TransferScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 _buildActionButton(
-                                  icon: 'assets/icons/credit.svg',
+                                  icon: 'assets/icons/credit3.svg',
                                   label: 'Crédit',
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const CreditScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 _buildActionButton(
-                                  icon: 'assets/icons/loan.svg',
-                                  label: 'Prêtez',
-                                  onTap: () {},
+                                  icon: 'assets/icons/borrow-svgrepo-com.svg',
+                                  label: _isPeculeSelected ? 'Prêt souple' : 'Prêtez',
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const LoanScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),
@@ -361,24 +357,52 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
                             Row(
                               children: [
                                 _buildActionButton(
-                                  icon: 'assets/icons/salary-advance.svg',
+                                  icon: 'assets/icons/time-is-money.svg',
                                   label: 'Acompte sur salaire',
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SalaryAdvanceScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 _buildActionButton(
-                                  icon: 'assets/icons/salary.svg',
+                                  icon: 'assets/icons/avance.svg',
                                   label: 'Avance sur salaire',
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const SalaryAdvancePlusScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 _buildActionButton(
-                                  icon: 'assets/icons/advice.svg',
+                                  icon: 'assets/icons/advice-consult.svg',
                                   label: 'Conseil financier',
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const FinancialAdviceScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                                 _buildActionButton(
-                                  icon: 'assets/icons/borrow.svg',
+                                  icon: 'assets/icons/borrow-svgrepo-com.svg',
                                   label: 'Empreinter',
-                                  onTap: () {},
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const BorrowScreen(),
+                                      ),
+                                    );
+                                  },
                                 ),
                               ],
                             ),
@@ -867,6 +891,57 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTabSelector() {
+    return Row(
+      children: [
+        GestureDetector(
+          onTap: () => setState(() => _isPeculeSelected = false),
+          child: Text(
+            'Solde principal',
+            style: TextStyle(
+              color: !_isPeculeSelected ? AppColors.primary : Colors.grey,
+              fontSize: 16,
+              fontWeight: !_isPeculeSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ),
+        const SizedBox(width: 16),
+        GestureDetector(
+          onTap: () => setState(() => _isPeculeSelected = true),
+          child: Text(
+            'Pécule en cours',
+            style: TextStyle(
+              color: _isPeculeSelected ? AppColors.primary : Colors.grey,
+              fontSize: 16,
+              fontWeight: _isPeculeSelected ? FontWeight.bold : FontWeight.normal,
+            ),
+          ),
+        ),
+        const Spacer(),
+        IconButton(
+          icon: RotationTransition(
+            turns: Tween(begin: 0.0, end: 1.0).animate(_refreshController),
+            child: SvgPicture.asset(
+              'assets/icons/refresh.svg',
+              colorFilter: const ColorFilter.mode(
+                AppColors.grey,
+                BlendMode.srcIn,
+              ),
+              width: 20,
+              height: 20,
+            ),
+          ),
+          onPressed: _refreshBalance,
+          padding: EdgeInsets.zero,
+          constraints: const BoxConstraints(
+            minWidth: 32,
+            minHeight: 32,
+          ),
+        ),
+      ],
     );
   }
 } 

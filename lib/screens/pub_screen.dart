@@ -53,56 +53,63 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
       body: SafeArea(
         child: Stack(
           children: [
-            // Image de pub
-            Column(
-              children: [
-                // Barre de progression en haut
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(2),
-                    child: LinearProgressIndicator(
-                      value: _progressAnimation.value,
-                      backgroundColor: Colors.grey[700],
-                      valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
-                      minHeight: 2,
+            // Image de pub avec GestureDetector
+            GestureDetector(
+              onLongPressStart: (_) => _progressController.stop(),
+              onLongPressEnd: (_) => _progressController.forward(),
+              onTapDown: (_) => _progressController.stop(),
+              onTapUp: (_) => _progressController.forward(),
+              onTapCancel: () => _progressController.forward(),
+              child: Column(
+                children: [
+                  // Barre de progression en haut
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(2),
+                      child: LinearProgressIndicator(
+                        value: _progressAnimation.value,
+                        backgroundColor: Colors.grey[700],
+                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                        minHeight: 2,
+                      ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 8),
-                // En-tête
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                      const Text(
-                        'Publicité',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
+                  const SizedBox(height: 8),
+                  // En-tête
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => Navigator.pop(context),
                         ),
-                      ),
-                      const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.share, color: Colors.white),
-                        onPressed: () {},
-                      ),
-                    ],
+                        const Text(
+                          'Publicité',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const Spacer(),
+                        IconButton(
+                          icon: const Icon(Icons.share, color: Colors.white),
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                // Image principale
-                Expanded(
-                  child: Image.asset(
-                    'assets/pub2.jpg',
-                    fit: BoxFit.cover,
+                  // Image principale
+                  Expanded(
+                    child: Image.asset(
+                      'assets/pub3.png',
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             // Boutons en bas
             Positioned(
