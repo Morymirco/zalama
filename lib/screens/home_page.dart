@@ -1,18 +1,12 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:zalama/constants/colors.dart';
-import 'package:zalama/screens/borrow_screen.dart';
-import 'package:zalama/screens/credit_screen.dart';
-import 'package:zalama/screens/financial_advice_screen.dart';
-import 'package:zalama/screens/history_screen.dart';
-import 'package:zalama/screens/loan_screen.dart';
-import 'package:zalama/screens/offers_screen.dart';
-import 'package:zalama/screens/profile_screen.dart';
-import 'package:zalama/screens/pub_screen.dart';
-import 'package:zalama/screens/recharge_screen.dart';
-import 'package:zalama/screens/salary_advance_plus_screen.dart';
-import 'package:zalama/screens/salary_advance_screen.dart';
-import 'package:zalama/screens/transfer_screen.dart';
+
+import 'history_screen.dart';
+import 'notification_screen.dart';
+import 'profile_screen.dart';
+import 'pub_screen.dart';
+import 'salary_advance_screen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -62,539 +56,153 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: _currentIndex == 0 
-          ? SafeArea(
+      backgroundColor: const Color(0xFF1E1E1E),  // Couleur de fond principale
+      body: Stack(
+        children: [
+          SafeArea(
               child: Column(
                 children: [
-                  // Partie fixe
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        // En-tête avec logo et icônes
-                        Row(
-                          children: [
-                            Image.asset(
-                              'assets/logoz.png',
-                              height: 32,
-                            ),
-                            const SizedBox(width: 8),
-                            const Text(
-                              'ZALAMA',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            const Spacer(),
-                            Stack(
-                              children: [
-                                IconButton(
-                                  icon: const Icon(Icons.notifications_outlined),
-                                  onPressed: () {},
-                                  padding: EdgeInsets.zero,
-                                  constraints: const BoxConstraints(
-                                    minWidth: 40,
-                                    minHeight: 40,
-                                  ),
-                                ),
-                                Positioned(
-                                  right: 4,
-                                  top: 4,
-                                  child: Container(
-                                    padding: const EdgeInsets.all(4),
-                                    decoration: const BoxDecoration(
-                                      color: Colors.red,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: const Text(
-                                      '2',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 10,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.help_outline),
-                              onPressed: () {},
-                              padding: EdgeInsets.zero,
-                              constraints: const BoxConstraints(
-                                minWidth: 40,
-                                minHeight: 40,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 24),
-                        // Carte profil
-                        Container(
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(16),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withOpacity(0.1),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: Row(
-                            children: [
-                              CircleAvatar(
-                                radius: 30,
-                                backgroundColor: Colors.transparent,
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    border: Border.all(
-                                      color: AppColors.primary,
-                                      width: 2,
-                                    ),
-                                  ),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(28),
-                                    child: Image.asset(
-                                      'assets/profil.jpg',
-                                      width: 56,
-                                      height: 56,
-                                      fit: BoxFit.cover,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 16),
-                              const Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Mory Koulibaly',
-                                      style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    Text(
-                                      'Etudiant',
-                                      style: TextStyle(
-                                        color: AppColors.grey,
+                _buildHeader(),
+                _buildUserCard(),
+                _buildBalanceCard(),
+                _buildTransactionTabs(),
+                const SizedBox(height: 20),
+                Expanded(
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.only(bottom: 100),
+                    child: _buildTransactionsList(),
                                       ),
                                     ),
                                   ],
                                 ),
-                              ),
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const PubScreen(),
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  width: 50,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: LinearGradient(
-                                      colors: [
-                                        AppColors.primary,
-                                        AppColors.primary.withOpacity(0.5),
-                                      ],
-                                      begin: Alignment.topLeft,
-                                      end: Alignment.bottomRight,
-                                    ),
-                                  ),
-                                  padding: const EdgeInsets.all(2),
-                                  child: Container(
-                                    decoration: const BoxDecoration(
-                                      color: Colors.white,
-                                      shape: BoxShape.circle,
-                                    ),
-                                    padding: const EdgeInsets.all(2),
-                                    child: ClipRRect(
-                                      borderRadius: BorderRadius.circular(25),
-                                      child: Stack(
-                                        children: [
-                                          Image.asset(
-                                            'assets/pub.png',
-                                            width: 46,
-                                            height: 46,
-                                            fit: BoxFit.cover,
                                           ),
                                           Positioned(
+            left: 0,
                                             right: 0,
                                             bottom: 0,
-                                            child: Container(
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: const BoxDecoration(
-                                                color: Colors.green,
-                                                shape: BoxShape.circle,
-                                              ),
-                                              child: const Text(
-                                                'New',
-                                                style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 8,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
+            child: _buildBottomNavigationBar(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Row(
+            children: [
+              Image.asset('assets/logoz.png', height: 30),
+              const SizedBox(width: 8),
+              const Text('ZALAMA', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            ],
+          ),
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const NotificationScreen(),
+                    ),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF242426),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Stack(
+                    children: [
+                      const Icon(
+                        Icons.notifications_outlined,
+                        color: Colors.white,
+                        size: 24,
+                      ),
+                      Positioned(
+                        right: 0,
+                        top: 0,
+                        child: Container(
+                          padding: const EdgeInsets.all(4),
+                          decoration: const BoxDecoration(
+                            color: Color(0xFF2F7AC8),
+                            shape: BoxShape.circle,
+                          ),
+                          child: const Text(
+                            '2',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                        const SizedBox(height: 24),
-                        // Solde principal
-                        _buildTabSelector(),
-                        Row(
-                          children: [
-                            Text(
-                              _formatBalance('900.000 GNF'),
-                              style: const TextStyle(
-                                fontSize: 32,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            const SizedBox(width: 5),
-                            IconButton(
-                              icon: Icon(
-                                _isBalanceVisible ? Icons.visibility_outlined : Icons.visibility_off_outlined,
-                                color: AppColors.grey,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _isBalanceVisible = !_isBalanceVisible;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  // Partie scrollable
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const SizedBox(height: 8),
-                            // Actions rapides
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceAround,
-                              children: [
-                                _buildActionButton(
-                                  icon: 'assets/icons/recharge.svg',
-                                  label: 'Recharger',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const RechargeScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                _buildActionButton(
-                                  icon: 'assets/icons/transfer.svg',
-                                  label: 'Transférer',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const TransferScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                _buildActionButton(
-                                  icon: 'assets/icons/credit3.svg',
-                                  label: 'Crédit',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const CreditScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                _buildActionButton(
-                                  icon: 'assets/icons/borrow-svgrepo-com.svg',
-                                  label: _isPeculeSelected ? 'Prêt souple' : 'Prêtez',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const LoanScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 14),
-                            Row(
-                              children: [
-                                _buildActionButton(
-                                  icon: 'assets/icons/time-is-money.svg',
-                                  label: 'Acompte sur salaire',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const SalaryAdvanceScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                _buildActionButton(
-                                  icon: 'assets/icons/avance.svg',
-                                  label: 'Avance sur salaire',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const SalaryAdvancePlusScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                _buildActionButton(
-                                  icon: 'assets/icons/advice-consult.svg',
-                                  label: 'Conseil financier',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const FinancialAdviceScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                _buildActionButton(
-                                  icon: 'assets/icons/borrow-svgrepo-com.svg',
-                                  label: 'Empreinter',
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const BorrowScreen(),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 24),
-                            // Informations de prêt
-                            Row(
-                              children: [
-                                Expanded(
-                                  child: _buildInfoCard(
-                                    title: 'Solde pret en cours',
-                                    amount: '1.000.000 GNF',
-                                    subtitle: 'Periode 12 Mois',
-                                  ),
-                                ),
-                                const SizedBox(width: 16),
-                                Expanded(
-                                  child: _buildInfoCard(
-                                    title: 'Gain sur pret',
-                                    amount: '100.000 GNF',
-                                    subtitle: 'Periode restant 6 Mois',
-                                    gainPercentage: '10%',
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 24),
-                            // Opportunités d'investissement
-                            const Text(
-                              'Opportunité d\'investissement',
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColors.primary,
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            _buildInvestmentCard(),
-                            const SizedBox(height: 16),
-                            _buildInvestmentCard(),
-                            const SizedBox(height: 16),
-                            const SizedBox(height: 24),
-                            // Liste des transactions
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                const Text(
-                                  'Liste des transactions',
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppColors.primary,
-                                  ),
-                                ),
-                                TextButton(
-                                  onPressed: () {},
-                                  child: const Text(
-                                    'Voir plus',
-                                    style: TextStyle(
-                                      color: AppColors.primary,
-                                      fontWeight: FontWeight.w500,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            const SizedBox(height: 16),
-                            // Filtres
-                            SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              child: Row(
-                                children: [
-                                  _buildFilterChip('Tout', true),
-                                  const SizedBox(width: 8),
-                                  _buildFilterChip('Approuve', false),
-                                  const SizedBox(width: 8),
-                                  _buildFilterChip('Non approuve', false),
-                                  const SizedBox(width: 8),
-                                  _buildFilterChip('En attente', false),
-                                ],
-                              ),
-                            ),
-                            const SizedBox(height: 16),
-                            // Liste des transactions
-                            _buildTransactionItem(
-                              icon: 'assets/icons/money.png',
-                              title: 'Orange Money',
-                              date: 'Aujourd\'hui, 16:50',
-                              amount: '-500.000 GNF',
-                              status: 'Approuve',
-                              statusColor: Colors.green,
-                            ),
-                            const SizedBox(height: 12),
-                            _buildTransactionItem(
-                              icon: 'assets/icons/visa.png',
-                              title: 'visa',
-                              date: 'Aujourd\'hui, 16:50',
-                              amount: '-500.000 GNF',
-                              status: 'Non approuve',
-                              statusColor: Colors.red,
-                            ),
-                            const SizedBox(height: 12),
-                            _buildTransactionItem(
-                              icon: 'assets/icons/paycard.png',
-                              title: 'Paypal',
-                              date: 'Aujourd\'hui, 16:50',
-                              amount: '-500.000 GNF',
-                              status: 'En attente',
-                              statusColor: Colors.orange,
-                            ),
-                          ],
-                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
-            )
-          : _currentIndex == 1 
-              ? const HistoryScreen()
-              : _currentIndex == 2 
-                  ? const OffersScreen()
-                  : const ProfileScreen(), // Pour les autres onglets
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: AppColors.primary,
-        unselectedItemColor: Colors.grey,
-        currentIndex: _currentIndex,
-        type: BottomNavigationBarType.fixed,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.description),
-            label: 'Historiques',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_offer),
-            label: 'Offres',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildActionButton({
-    required String icon,
-    required String label,
-    required VoidCallback onTap,
-  }) {
-    return Expanded(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-            decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: IconButton(
-              icon: SvgPicture.asset(
-                icon,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
                 ),
-                width: 24,
-                height: 24,
               ),
-              onPressed: onTap,
-            ),
+            ],
           ),
-          const SizedBox(height: 8),
-          Text(
-            label,
-            textAlign: TextAlign.center,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.grey,
-              fontSize: 12,
-              height: 1.2,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildUserCard() {
+    return Container(
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: const Color(0xFF242426),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Row(
+        children: [
+          const CircleAvatar(
+            radius: 25,
+            backgroundImage: AssetImage('assets/zprofile.png'),
+          ),
+          const SizedBox(width: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text('Mory Koulibaly', 
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('Comptable', 
+                style: TextStyle(color: Colors.grey[400])),
+            ],
+          ),
+          const Spacer(),
+          GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const PubScreen()),
+              );
+            },
+            child: Container(
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                border: Border.all(
+                  color: Colors.amber,
+                  width: 2,
+                ),
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: Image.asset(
+                  'assets/pub3.png',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
         ],
@@ -602,291 +210,227 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget _buildInfoCard({
-    required String title,
-    required String amount,
-    required String subtitle,
-    String? gainPercentage,
-  }) {
+  Widget _buildBalanceCard() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
+      margin: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Colors.white,
+        gradient: const LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          stops: [0.22, 0.42, 0.51, 0.61, 0.85],  // Stops exacts de Figma
+          colors: [
+            Color(0xFF242426),  // 22%
+            Color(0xFF282D34),  // 42%
+            Color(0xFF2D3946),  // 51%
+            Color(0xFF354D85),  // 61%
+            Color(0xFF5598DB),  // 85%
+          ],
+        ),
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+            spreadRadius: 2,
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            title,
-            style: const TextStyle(
-              color: AppColors.grey,
-              fontSize: 13,
-            ),
-          ),
-          const SizedBox(height: 6),
           Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Flexible(
-                child: Text(
-                  _formatBalance(amount),
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ),
-              if (gainPercentage != null) ...[
-                const SizedBox(width: 4),
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 6,
-                    vertical: 2,
-                  ),
-                  decoration: BoxDecoration(
-                    color: Colors.green.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(4),
-                  ),
-                  child: Text(
-                    gainPercentage,
-                    style: const TextStyle(
-                      color: Colors.green,
-                      fontSize: 11,
-                      fontWeight: FontWeight.bold,
+              Row(
+                children: [
+                  Text('Solde principale',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.7),
+                      fontSize: 16,
                     ),
                   ),
+                  const SizedBox(width: 8),
+                  Text('Salaire net en cours',
+                    style: TextStyle(
+                      color: Color(0xFF64748B),
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+              IconButton(
+                onPressed: _refreshBalance,
+                icon: RotationTransition(
+                  turns: _refreshController,
+                  child: Icon(
+                    Icons.refresh_rounded,
+                    color: Colors.white.withOpacity(0.7),
+                  ),
                 ),
-              ],
+              ),
             ],
           ),
-          const SizedBox(height: 6),
-          Text(
-            subtitle,
-            style: TextStyle(
-              color: AppColors.grey.withOpacity(0.8),
-              fontSize: 11,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildInvestmentCard() {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 8,
-            offset: const Offset(0, 2),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
+          const SizedBox(height: 12),
           Row(
-            children: [
-              CircleAvatar(
-                radius: 20,
-                backgroundColor: AppColors.primary.withOpacity(0.1),
-                child: Image.asset(
-                  'assets/logoz.png',
-                  height: 24,
+                children: [
+                  Text(
+                _formatBalance('65.000 GNF'),
+                style: const TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
                 ),
               ),
               const SizedBox(width: 12),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'ZALAMA',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  Text(
-                    'Leve de fond',
-                    style: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 12,
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    _isBalanceVisible = !_isBalanceVisible;
+                  });
+                },
+                child: Icon(
+                  _isBalanceVisible ? Icons.visibility : Icons.visibility_off,
+                  color: Colors.white.withOpacity(0.7),
+                  size: 22,
                     ),
                   ),
                 ],
               ),
-              const Spacer(),
-              const Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Montant',
-                    style: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Text(
-                    '100.000.000 GNF',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
+          const SizedBox(height: 20),
+          Center(
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.15),
+                borderRadius: BorderRadius.circular(25),
               ),
-            ],
-          ),
-          const SizedBox(height: 16),
-          const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'Periode:',
-                    style: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 12,
+              child: TextButton.icon(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const SalaryAdvanceScreen(),
                     ),
+                  );
+                },
+                icon: const Icon(
+                  Icons.account_balance_wallet_outlined,
+                  color: Colors.white,
+                  size: 20,
+                ),
+                label: const Text(
+                  'Avance sur salaire',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
                   ),
-                  Text(
-                    '3 ans',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: AppColors.primary,
-                    ),
+                ),
+                style: TextButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 20,
+                    vertical: 12,
                   ),
-                ],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(25),
+                  ),
+                ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.end,
-                children: [
-                  Text(
-                    'Retour sur\ninvestissement:',
-                    style: TextStyle(
-                      color: AppColors.grey,
-                      fontSize: 12,
-                    ),
-                  ),
-                  Text(
-                    '30%',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
-              ),
-            ],
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildFilterChip(String label, bool isSelected) {
+  Widget _buildTransactionTabs() {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       decoration: BoxDecoration(
-        color: isSelected ? AppColors.primary : Colors.transparent,
+        color: const Color(0xFF1C1C1E),  // Couleur de fond sombre
+        borderRadius: BorderRadius.circular(25),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildTab('Tout', _currentIndex == 0),
+          _buildTab('Approuvées', _currentIndex == 1),
+          _buildTab('Non approuvées', _currentIndex == 2),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTab(String text, bool isSelected) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          _currentIndex = text == 'Tout' ? 0 : text == 'Approuvées' ? 1 : 2;
+        });
+      },
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected ? const Color(0xFF2C2C2E) : Colors.transparent,  // Couleur de fond gris foncé quand sélectionné
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isSelected ? AppColors.primary : AppColors.grey,
-        ),
       ),
       child: Text(
-        label,
+          text,
         style: TextStyle(
-          color: isSelected ? Colors.white : AppColors.grey,
+            color: isSelected ? Colors.white : const Color(0xFF64748B),  // Couleur du texte grise quand non sélectionné
           fontSize: 14,
+            fontWeight: isSelected ? FontWeight.w500 : FontWeight.normal,
+          ),
         ),
       ),
     );
   }
 
-  Widget _buildTransactionItem({
-    required String icon,
-    required String title,
-    required String date,
-    required String amount,
-    required String status,
-    required Color statusColor,
-  }) {
+  Widget _buildTransactionsList() {
+    return Column(
+      children: [
+        _buildTransactionItem('Orange Money', '-500.000 GNF', 'Approuvé', Colors.green),
+        _buildTransactionItem('Paypal', '-500.000 GNF', 'Non approuvé', Colors.red),
+        _buildTransactionItem('Mobile Money', '-500.000 GNF', 'En attente', Colors.orange),
+        _buildTransactionItem('Orange Money', '-500.000 GNF', 'Approuvé', Colors.green),
+        _buildTransactionItem('Orange Money', '-500.000 GNF', 'Approuvé', Colors.green),
+      ],
+    );
+  }
+
+  Widget _buildTransactionItem(String title, String amount, String status, Color statusColor) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      margin: const EdgeInsets.only(bottom: 12, left: 16, right: 16),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFF242426),  // Nouvelle couleur pour les items de transaction
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.greyLight),
       ),
       child: Row(
         children: [
           Container(
-            width: 40,
-            height: 40,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: const Color(0xFF1E1E1E),  // Couleur de fond pour l'icône
               borderRadius: BorderRadius.circular(8),
             ),
-            child: Image.asset(
-              icon.replaceAll('.svg', '.png'),
-              width: 24,
-              height: 24,
-            ),
+            child: Image.asset('assets/icons/money.png', height: 24, width: 24),
           ),
           const SizedBox(width: 12),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  title,
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                  ),
-                ),
-                Text(
-                  date,
-                  style: TextStyle(
-                    color: AppColors.grey.withOpacity(0.8),
-                    fontSize: 12,
-                  ),
-                ),
+                Text(title, style: const TextStyle(fontWeight: FontWeight.bold)),
+                Text('Aujourd\'hui, 16:50', style: TextStyle(color: Colors.grey[400], fontSize: 12)),
               ],
             ),
           ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              Text(
-                amount,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 16,
-                  color: Colors.red,
-                ),
-              ),
-              Text(
-                status,
-                style: TextStyle(
-                  color: statusColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
+              Text(amount, style: const TextStyle(fontWeight: FontWeight.bold)),
+              Text(status, style: TextStyle(color: statusColor, fontSize: 12)),
             ],
           ),
         ],
@@ -894,54 +438,67 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
     );
   }
 
-  Widget _buildTabSelector() {
-    return Row(
-      children: [
-        GestureDetector(
-          onTap: () => setState(() => _isPeculeSelected = false),
-          child: Text(
-            'Solde principal',
-            style: TextStyle(
-              color: !_isPeculeSelected ? AppColors.primary : Colors.grey,
-              fontSize: 16,
-              fontWeight: !_isPeculeSelected ? FontWeight.bold : FontWeight.normal,
+  Widget _buildBottomNavigationBar() {
+    return Padding(
+      padding: const EdgeInsets.only(
+        bottom: 20,
+        left: 64,
+        right: 64,
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(30),
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+          child: Container(
+            height: 56,
+            decoration: BoxDecoration(
+              color: const Color(0x825D5D5D),
+              borderRadius: BorderRadius.circular(30),
             ),
-          ),
-        ),
-        const SizedBox(width: 16),
-        GestureDetector(
-          onTap: () => setState(() => _isPeculeSelected = true),
-          child: Text(
-            'Pécule en cours',
-            style: TextStyle(
-              color: _isPeculeSelected ? AppColors.primary : Colors.grey,
-              fontSize: 16,
-              fontWeight: _isPeculeSelected ? FontWeight.bold : FontWeight.normal,
-            ),
-          ),
-        ),
-        const Spacer(),
-        IconButton(
-          icon: RotationTransition(
-            turns: Tween(begin: 0.0, end: 1.0).animate(_refreshController),
-            child: SvgPicture.asset(
-              'assets/icons/refresh.svg',
-              colorFilter: const ColorFilter.mode(
-                AppColors.grey,
-                BlendMode.srcIn,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildNavItem(Icons.menu, 0),
+                  _buildNavItem(Icons.home_filled, 1),
+                  _buildNavItem(Icons.person, 2),
+                ],
               ),
-              width: 20,
-              height: 20,
             ),
           ),
-          onPressed: _refreshBalance,
-          padding: EdgeInsets.zero,
-          constraints: const BoxConstraints(
-            minWidth: 32,
-            minHeight: 32,
-          ),
         ),
-      ],
+      ),
+    );
+  }
+
+  Widget _buildNavItem(IconData icon, int index) {
+    final bool isSelected = _currentIndex == index;
+    return IconButton(
+          padding: EdgeInsets.zero,
+      constraints: const BoxConstraints(),
+      icon: Icon(
+        icon,
+        size: 24,
+        color: isSelected ? const Color(0xFF2F7AC8) : const Color(0xFF64748B),
+      ),
+      onPressed: () {
+        setState(() {
+          _currentIndex = index;
+        });
+        // Gestion de la navigation
+        if (index == 0) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const HistoryScreen()),
+          );
+        } else if (index == 2) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const ProfileScreen()),
+          );
+        }
+      },
     );
   }
 } 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zalama/constants/colors.dart';
 import 'package:zalama/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -10,15 +11,22 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
   bool _showPatterns = false;
+  bool _showAppName = false;
 
   @override
   void initState() {
     super.initState();
     _navigateToOnboarding();
-    // Déclencher l'animation après un court délai
+    // Animation séquentielle
     Future.delayed(const Duration(milliseconds: 200), () {
       setState(() {
         _showPatterns = true;
+      });
+    });
+    // Afficher le nom de l'app vers la fin
+    Future.delayed(const Duration(milliseconds: 2000), () {
+      setState(() {
+        _showAppName = true;
       });
     });
   }
@@ -30,7 +38,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     Navigator.pushReplacement(
       context,
       PageRouteBuilder(
-        pageBuilder: (context, animation, secondaryAnimation) =>  OnboardingScreen(),
+        pageBuilder: (context, animation, secondaryAnimation) => const OnboardingScreen(),
         transitionsBuilder: (context, animation, secondaryAnimation, child) {
           const begin = 0.0;
           const end = 1.0;
@@ -45,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
             child: child,
           );
         },
-        transitionDuration: const Duration(milliseconds: 800),
+        transitionDuration: const Duration(milliseconds: 300),
       ),
     );
   }
@@ -53,15 +61,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0E2C66),
+      backgroundColor: AppColors.primary,
       body: Stack(
         children: [
-          // Motif en haut à droite avec animation
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.easeOutBack,
-            top: _showPatterns ? 0 : -200,
-            right: _showPatterns ? 0 : -200,
+          // Motif en haut à droite
+          Positioned(
+            top: 0,
+            right: 0,
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 800),
               opacity: _showPatterns ? 1.0 : 0.0,
@@ -73,12 +79,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
             ),
           ),
-          // Motif en bas à gauche avec animation
-          AnimatedPositioned(
-            duration: const Duration(milliseconds: 800),
-            curve: Curves.easeOutBack,
-            bottom: _showPatterns ? 0 : -200,
-            left: _showPatterns ? 0 : -200,
+          // Motif en bas à gauche
+          Positioned(
+            bottom: 0,
+            left: 0,
             child: AnimatedOpacity(
               duration: const Duration(milliseconds: 800),
               opacity: _showPatterns ? 1.0 : 0.0,
@@ -93,22 +97,60 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
               ),
             ),
           ),
-          // Logo central avec animation de fade
+          // Logo central
           Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                AnimatedOpacity(
+                  duration: const Duration(milliseconds: 800),
+                  opacity: _showPatterns ? 1.0 : 0.0,
+                  child: Container(
+                    width: 200,
+                    height: 200,
+                    decoration: const BoxDecoration(
+                      color: AppColors.primary,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Image.asset(
+                      'assets/logoW.png',
+                      fit: BoxFit.contain,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          // Nom de l'application en bas
+          Positioned(
+            bottom: 50,
+            left: 0,
+            right: 0,
             child: AnimatedOpacity(
-              duration: const Duration(milliseconds: 800),
-              opacity: _showPatterns ? 1.0 : 0.0,
-              child: Container(
-                width: 200,
-                height: 200,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF1565C0),
-                  shape: BoxShape.circle,
-                ),
-                child: Image.asset(
-                  'assets/logoW.png',
-                  fit: BoxFit.contain,
-                ),
+              duration: const Duration(milliseconds: 500),
+              opacity: _showAppName ? 1.0 : 0.0,
+              child: const Column(
+                children: [
+                  Text(
+                    'ZALAMA',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      letterSpacing: 2,
+                    ),
+                  ),
+                  SizedBox(height: 8),
+                  Text(
+                    'Votre partenaire financier',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: AppColors.grey,
+                      fontSize: 16,
+                    ),
+                  ),
+                ],
               ),
             ),
           ),

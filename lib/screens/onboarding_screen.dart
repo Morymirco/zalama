@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:zalama/models/onboarding_data.dart';
 import 'package:zalama/screens/auth_screen.dart';
-import 'package:zalama/widgets/dot_indicator.dart';
-import 'package:zalama/widgets/onboarding_page.dart';
-import 'package:zalama/widgets/circle_progress_painter.dart';
 import 'package:zalama/screens/login_screen.dart';
+import 'package:zalama/widgets/circle_progress_painter.dart';
+import 'package:zalama/widgets/onboarding_page.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({super.key});

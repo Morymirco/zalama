@@ -50,11 +50,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFF1E1E1E),
       body: SafeArea(
         child: Column(
           children: [
-            // En-tête avec menu déroulant
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Row(
@@ -64,7 +63,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                       decoration: BoxDecoration(
-                        border: Border.all(color: AppColors.greyLight),
+                        color: const Color(0xFF242426),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -74,13 +73,13 @@ class _HistoryScreenState extends State<HistoryScreen> {
                             _selectedFilter,
                             style: const TextStyle(
                               fontSize: 16,
-                              color: Colors.black,
+                              color: Colors.white,
                             ),
                           ),
                           const SizedBox(width: 8),
-                          Icon(
+                          const Icon(
                             Icons.keyboard_arrow_down,
-                            color: Colors.grey[600],
+                            color: Color(0xFF64748B),
                           ),
                         ],
                       ),
@@ -88,11 +87,11 @@ class _HistoryScreenState extends State<HistoryScreen> {
                   ),
                   const Spacer(),
                   IconButton(
-                    icon: const Icon(Icons.filter_list),
+                    icon: const Icon(Icons.filter_list, color: Color(0xFF64748B)),
                     onPressed: () {},
                   ),
                   IconButton(
-                    icon: const Icon(Icons.more_vert),
+                    icon: const Icon(Icons.more_vert, color: Color(0xFF64748B)),
                     onPressed: () {},
                   ),
                 ],
@@ -148,11 +147,10 @@ class _HistoryScreenState extends State<HistoryScreen> {
     required Color statusColor,
   }) {
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: const Color(0xFF242426),
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColors.greyLight),
       ),
       child: Row(
         children: [
@@ -161,7 +159,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
             height: 40,
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: AppColors.primary.withOpacity(0.1),
+              color: const Color(0xFF1E1E1E),
               borderRadius: BorderRadius.circular(8),
             ),
             child: Image.asset(
@@ -178,14 +176,15 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 Text(
                   title,
                   style: const TextStyle(
+                    color: Colors.white,
                     fontWeight: FontWeight.w500,
                     fontSize: 16,
                   ),
                 ),
                 Text(
                   date,
-                  style: TextStyle(
-                    color: AppColors.grey.withOpacity(0.8),
+                  style: const TextStyle(
+                    color: Color(0xFF64748B),
                     fontSize: 12,
                   ),
                 ),
@@ -200,7 +199,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                 style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 16,
-                  color: Colors.red,
+                  color: Colors.white,
                 ),
               ),
               Text(

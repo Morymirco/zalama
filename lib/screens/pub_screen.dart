@@ -49,11 +49,10 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: const Color(0xFF1E1E1E),  // Mise à jour de la couleur de fond
       body: SafeArea(
         child: Stack(
           children: [
-            // Image de pub avec GestureDetector
             GestureDetector(
               onLongPressStart: (_) => _progressController.stop(),
               onLongPressEnd: (_) => _progressController.forward(),
@@ -62,21 +61,19 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
               onTapCancel: () => _progressController.forward(),
               child: Column(
                 children: [
-                  // Barre de progression en haut
                   Container(
                     margin: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(2),
                       child: LinearProgressIndicator(
                         value: _progressAnimation.value,
-                        backgroundColor: Colors.grey[700],
-                        valueColor: const AlwaysStoppedAnimation<Color>(Colors.white),
+                        backgroundColor: const Color(0xFF242426),  // Mise à jour de la couleur
+                        valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF2F7AC8)),  // Couleur bleue
                         minHeight: 2,
                       ),
                     ),
                   ),
                   const SizedBox(height: 8),
-                  // En-tête
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
@@ -95,13 +92,12 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
                         ),
                         const Spacer(),
                         IconButton(
-                          icon: const Icon(Icons.share, color: Colors.white),
+                          icon: const Icon(Icons.share, color: Color(0xFF64748B)),
                           onPressed: () {},
                         ),
                       ],
                     ),
                   ),
-                  // Image principale
                   Expanded(
                     child: Image.asset(
                       'assets/pub3.png',
@@ -111,7 +107,6 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
                 ],
               ),
             ),
-            // Boutons en bas
             Positioned(
               left: 0,
               right: 0,
@@ -121,14 +116,14 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
                 child: Row(
                   children: [
                     Container(
-                      decoration: const BoxDecoration(
+                      decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.white,
+                        color: const Color(0xFF242426),
                       ),
                       child: IconButton(
                         icon: const Icon(
                           Icons.favorite_border,
-                          color: Colors.black,
+                          color: Color(0xFF64748B),
                         ),
                         onPressed: () {},
                       ),
@@ -137,8 +132,8 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
                     ElevatedButton(
                       onPressed: () {},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.black,
+                        backgroundColor: const Color(0xFF2F7AC8),
+                        foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(
                           horizontal: 32,
                           vertical: 12,
@@ -159,20 +154,19 @@ class _PubScreenState extends State<PubScreen> with SingleTickerProviderStateMix
                 ),
               ),
             ),
-            // Texte des jours restants
             Positioned(
               top: 48,
               right: 16,
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                 decoration: BoxDecoration(
-                  color: Colors.black.withOpacity(0.6),
+                  color: const Color(0xFF242426),
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: const Text(
                   'Jours restant: 3',
                   style: TextStyle(
-                    color: Colors.white,
+                    color: Color(0xFF64748B),
                     fontSize: 12,
                   ),
                 ),
